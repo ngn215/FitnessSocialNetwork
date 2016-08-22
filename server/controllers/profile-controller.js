@@ -1,6 +1,7 @@
 var User = require('../datasets/users');
 var fs = require('fs-extra');
 var path = require('path');
+var moment = require('moment');
 
 module.exports.updatePhoto = function (req, res) {
   var file = req.files.file;
@@ -8,7 +9,7 @@ module.exports.updatePhoto = function (req, res) {
 
   console.log("User " + userId + "is submitting ", file);
 
-  var uploadDate = new Date().ISOString;
+  var uploadDate = moment().format('MMDDYYYYhmmssa');
   //uploadDate = uploadDate.replace(".","");
   //uploadDate = uploadDate.replace("-","");
   //uploadDate = uploadDate.replace(":","");

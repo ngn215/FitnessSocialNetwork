@@ -2,3 +2,8 @@
 body{
     margin-top: 150px;
 }
+
+.fitbit-section img{
+  width: 100px;
+  height: 100px
+}
