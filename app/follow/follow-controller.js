@@ -1,6 +1,12 @@
 (function (arguments) {
   angular.module('FitnessNetwork')
-    .controller('FollowController', ['$scope', '$http', function($scope, $http){
+    .controller('FollowController', ['$scope', '$http', 'sessionService',
+    function($scope, $http, sessionService){
+
+      if (sessionService.isUserLoggedIn()){
+        getDataFromLocalStorage();
+        getUsers($http);
+        }
 
         //function defs
         function getDataFromLocalStorage()
@@ -25,9 +31,6 @@
               console.log($scope.users);
             });
         }
-
-        getDataFromLocalStorage();
-        getUsers($http);
 
         $scope.follow = function(userId, fitnetworkerId)
         {

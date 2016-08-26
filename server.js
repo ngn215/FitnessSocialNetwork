@@ -17,6 +17,7 @@ app.use(multipartMiddleware);
 app.use('/app', express.static(__dirname + "/app"));
 app.use('/node_modules', express.static(__dirname + "/node_modules"));
 app.use('/uploads', express.static(__dirname + "/uploads"));
+app.use('/services', express.static(__dirname + "/app/services"));
 
 app.get('/', function(req, res){
   res.sendfile('app/index.html');
