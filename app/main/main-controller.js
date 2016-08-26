@@ -1,12 +1,49 @@
 (function (arguments) {
   angular.module('FitnessNetwork')
-    .controller('MainController', ['$scope', '$http', '$interval',
-                          function ($scope, $http, $interval) {
+    .controller('MainController', ['$scope', '$http', '$interval', '$rootScope',
+                          function ($scope, $http, $interval, $rootScope) {
 
-          if (localStorage['User-Data'] !== undefined)
+          function loadUserData()
           {
+            console.log("loadUserData()");
             $scope.user = JSON.parse(localStorage['User-Data']);
             console.log($scope.user);
+          }
+
+          function getFitbits (intial){
+            console.log("getFitbits" + "(" + intial + ")");
+            $http.get('api/fitbit/get').success(function (response) {
+              if (intial) {
+                $scope.fitbits = response;
+                $rootScope.$broadcast('intialFitbitsRecd');
+              } else {
+                  if(response.length > $scope.fitbits.length){
+                      $scope.incomingFitbits = response;
+                  }
+              }
+            })
+          };
+
+          $scope.isUserLoggedIn = function(){
+            if (localStorage['User-Data'] !== undefined){
+              return true;
+            }
+            else {
+              return false;
+            }
+          };
+
+          $scope.$on('successfullLogIn', function(event) {
+            console.log("successfullLogIn Event handler");
+            loadUserData();
+            getFitbits(true);
+          })
+
+          if ($scope.isUserLoggedIn())
+          {
+            console.log("inside if ($scope.isUserLoggedIn())");
+            loadUserData();
+            getFitbits(true);
           }
 
           $scope.sendFitbit = function(event){
@@ -28,33 +65,40 @@
                       }
                     };
 
-          function getFitbits (intial){
-            $http.get('api/fitbit/get').success(function (response) {
-              if (intial) {
-                $scope.fitbits = response;
-              } else {
-                  if(response.length > $scope.fitbits.length){
-                      $scope.incomingFitbits = response;
-                  }
-              }
-            })
-          };
+            $scope.$on('intialFitbitsRecd', function(event) {
 
+                  $interval(function (arguments) {
+                    if ($scope.isUserLoggedIn())
+                    {
+                      getFitbits(false);
+                      if ($scope.incomingFitbits){
+                      $scope.difference = $scope.incomingFitbits.length
+                                          - $scope.fitbits.length;
+                      }
+                    //console.log("this is working");
+                    }
+                  }
+                  , 5000);
+
+              })
+
+          /*
           $interval(function (arguments) {
-            getFitbits(false);
-            if ($scope.incomingFitbits){
-            $scope.difference = $scope.incomingFitbits.length - $scope.fitbits.length;
+            if (!$scope.isUserLoggedIn() && $scope.user)
+            {
+              console.log("performing cleanup");
+              $scope.fitbits = undefined;
+              $scope.incomingFitbits = undefined;
+              $scope.user = undefined;
+            }
           }
-            console.log("this is working");
-          }, 5000)
+          , 5000)
+          */
 
           $scope.setNewFitbits = function(){
             $scope.fitbits = angular.copy($scope.incomingFitbits);
             $scope.incomingFitbits = undefined;
           }
-
-          //Initial
-          getFitbits(true);
 
                 }])
 }())

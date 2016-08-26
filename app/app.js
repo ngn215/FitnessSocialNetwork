@@ -17,7 +17,17 @@
               })
               .state('main', {
                 url: "/",
-                templateUrl: 'app/main/main.html',
+                templateUrl: "app/main/main.html",
+                controller: "MainController"
+              })
+              .state('follow', {
+                url: "/follow-users",
+                templateUrl: "app/follow/follow.html",
+                controller: "FollowController"
+              })
+              .state('logout', {
+                url: "/",
+                templateUrl: "app/main/main.html",
                 controller: "MainController"
               })
           })

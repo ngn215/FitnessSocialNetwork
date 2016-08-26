@@ -2,6 +2,22 @@
   <head>
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="app/css/main.css">
+
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.js"></script>
+    <script src="app/app.js"></script>
+
+    <!-- controllers -->
+    <script src="app/signup/signup-controller.js"></script>
+    <script src="app/navigation/navigation-controller.js"></script>
+    <script src="app/profile/edit-profile-controller.js"></script>
+    <script src="app/main/main-controller.js"></script>
+    <script src="app/follow/follow-controller.js"></script>
+
+    <!-- Libraries -->
+  <script src="node_modules/ng-file-upload/dist/ng-file-upload.js"></script>
+    <script src="node_modules/ng-file-upload/dist/ng-file-upload-all.js"></script>
+    <script src="node_modules/ng-file-upload/dist/ng-file-upload-shim.js"></script>
   </head>
 
   <nav class="navbar navbar-default navbar-fixed-top" ng-controller="NavigationController">
@@ -15,7 +31,8 @@
       </div>
       <div ng-show="loggedIn">
         <a ui-sref="editProfile">Edit Profile</a>
-        <a ng-click="logOut()">Logout</a>
+        <a ui-sref="follow">Follow Users</a>
+        <a ui-sref="logout" ng-click="logOut()">Logout</a>
       </div>
     </div>
 
@@ -24,23 +41,13 @@
   <body>
 
 
-    <div ui-view>
+      <div ui-view>
+
+      </div>
+
 
     </div>
   </body>
 
-  <script src="node_modules/angular/angular.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.js"></script>
-  <script src="app/app.js"></script>
 
-  <!-- controllers -->
-  <script src="app/signup/signup-controller.js"></script>
-  <script src="app/navigation/navigation-controller.js"></script>
-  <script src="app/profile/edit-profile-controller.js"></script>
-  <script src="app/main/main-controller.js"></script>
-
-  <!-- Libraries -->
-<script src="node_modules/ng-file-upload/dist/ng-file-upload.js"></script>
-  <script src="node_modules/ng-file-upload/dist/ng-file-upload-all.js"></script>
-  <script src="node_modules/ng-file-upload/dist/ng-file-upload-shim.js"></script>
 </html>

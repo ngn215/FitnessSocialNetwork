@@ -8,6 +8,7 @@ var app = express();
 var authenticationController = require('./server/controllers/authentication-controller');
 var profileController = require('./server/controllers/profile-controller');
 var fitbitController = require('./server/controllers/fitbit-controller');
+var usersController = require('./server/controllers/users-controller');
 
 mongoose.connect('mongodb://localhost:27017/fitnessnetwork');
 
@@ -33,6 +34,11 @@ app.post('/api/profile/updateBio', profileController.updateBio);
 //Fitbits
 app.post('/api/fitbit/post', fitbitController.postFitbit);
 app.get('/api/fitbit/get', fitbitController.getFitbits);
+
+//Users
+app.get('/api/users/get', usersController.getUsers);
+app.post('/api/users/follow', usersController.followUser);
+app.post('/api/users/unfollow', usersController.unfollowUser);
 
 app.listen('8080', function(){
   console.log("Listening for localhost 8080");

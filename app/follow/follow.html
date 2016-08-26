@@ -1,0 +1,11 @@
+<ul>
+  <li ng-repeat="fitnetworker in users"
+      ng-show="user._id !== fitnetworker._id"
+      >
+    {{fitnetworker.email}} <a
+                          ng-click="follow(user._id, fitnetworker._id)"
+                          ng-hide="checkIsFollowing(fitnetworker._id)">Follow</a>
+                          <a ng-click="unfollow(user._id, fitnetworker._id)"
+                          ng-show="checkIsFollowing(fitnetworker._id) === true">Unfollow</a>
+  </li>
+</ul>
