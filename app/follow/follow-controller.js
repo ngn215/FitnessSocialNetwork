@@ -3,9 +3,20 @@
     .controller('FollowController', ['$scope', '$http', 'sessionService',
     function($scope, $http, sessionService){
 
-      if (sessionService.isUserLoggedIn()){
-        getDataFromLocalStorage();
-        getUsers($http);
+      $scope.controllerName = "FollowController";
+      //$scope.loggedIn = sessionService.isUserLoggedIn($scope.controllerName);
+
+      // $scope.testLoggedIn = function(){
+      //   return sessionService.isUserLoggedIn($scope.controllerName + "testLoggedIn");
+      // }
+
+      if (sessionService.isUserLoggedIn($scope.controllerName)){
+          $scope.loggedIn = true;
+          getDataFromLocalStorage();
+          getUsers($http);
+        }
+        else {
+          $scope.loggedIn = false;
         }
 
         //function defs

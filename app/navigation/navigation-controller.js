@@ -4,7 +4,9 @@
     ['$scope', '$http', '$state', '$rootScope', 'sessionService',
     function($scope, $http, $state, $rootScope, sessionService){
 
-      if (localStorage['User-Data']){
+      $scope.controllerName = "NavigationController";
+
+      if (sessionService.isUserLoggedIn($scope.controllerName)) {
         $scope.loggedIn = true;
       }
       else {
@@ -25,8 +27,10 @@
     };
 
     $scope.logOut = function(){
-        localStorage.clear();
+        sessionService.clearSessionData();
+        // localStorage.clear();
         $scope.loggedIn = false;
+        $rootScope.$broadcast('successfullLogOut');
     };
 
   }])

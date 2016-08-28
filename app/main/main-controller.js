@@ -1,7 +1,20 @@
 (function (arguments) {
   angular.module('FitnessNetwork')
-    .controller('MainController', ['$scope', '$http', '$interval', '$rootScope',
-                          function ($scope, $http, $interval, $rootScope) {
+    .controller('MainController', ['$scope', '$http', '$interval', '$rootScope','sessionService',
+                          function ($scope, $http, $interval, $rootScope, sessionService) {
+
+          $scope.controllerName = "MainController";
+
+          if (sessionService.isUserLoggedIn($scope.controllerName)) {
+            //console.log("inside if (sessionService.isUserLoggedIn())");
+            $scope.loggedIn = true;
+            loadUserData();
+            getFitbits(true);
+          }
+          else {
+            //console.log("inside else part of if (sessionService.isUserLoggedIn())");
+            $scope.loggedIn = false;
+          }
 
           function loadUserData()
           {
@@ -24,27 +37,17 @@
             })
           };
 
-          $scope.isUserLoggedIn = function(){
-            if (localStorage['User-Data'] !== undefined){
-              return true;
-            }
-            else {
-              return false;
-            }
-          };
-
           $scope.$on('successfullLogIn', function(event) {
             console.log("successfullLogIn Event handler");
+            $scope.loggedIn = true;
             loadUserData();
             getFitbits(true);
           })
 
-          if ($scope.isUserLoggedIn())
-          {
-            console.log("inside if ($scope.isUserLoggedIn())");
-            loadUserData();
-            getFitbits(true);
-          }
+          $scope.$on('successfullLogOut', function(event) {
+            console.log("successfullLogOut Event handler");
+            $scope.loggedIn = false;
+          })
 
           $scope.sendFitbit = function(event){
                       if (event.which === 13) {
@@ -68,7 +71,7 @@
             $scope.$on('intialFitbitsRecd', function(event) {
 
                   $interval(function (arguments) {
-                    if ($scope.isUserLoggedIn())
+                    if ($scope.loggedIn)
                     {
                       getFitbits(false);
                       if ($scope.incomingFitbits){
