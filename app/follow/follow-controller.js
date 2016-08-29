@@ -10,79 +10,97 @@
       //   return sessionService.isUserLoggedIn($scope.controllerName + "testLoggedIn");
       // }
 
+      function initializePage()
+      {
+        console.log("initializePage()");
+        getDataFromLocalStorage();
+        getUsers($http);
+      }
+
       if (sessionService.isUserLoggedIn($scope.controllerName)){
           $scope.loggedIn = true;
-          getDataFromLocalStorage();
-          getUsers($http);
-        }
-        else {
-          $scope.loggedIn = false;
-        }
+          initializePage();
+      }
+      else {
+        console.log("setting $scope.loggedIn = false");
+        $scope.loggedIn = false;
+      }
 
-        //function defs
-        function getDataFromLocalStorage()
-        {
-          console.log("getDataFromLocalStorage()");
-          $scope.user = JSON.parse(localStorage['User-Data']);
-          console.log($scope.user);
-        }
+      $scope.$on('successfullLogIn', function(event) {
+        console.log("successfullLogIn Event handler");
+        $scope.loggedIn = true;
+        initializePage();
+      })
 
-        function updateLocalStorage(updatedData)
-        {
-          console.log("updateLocalStorage()");
-          localStorage.clear();
-          localStorage.setItem('User-Data', JSON.stringify(updatedData));
-        }
+      $scope.$on('successfullLogOut', function(event) {
+        console.log("successfullLogOut Event handler");
+        $scope.loggedIn = false;
+      })
 
-        function getUsers()
-        {
-            console.log("getUsers()");
-            $http.get('api/users/get').then(function(response){
-              $scope.users = response.data;
-              console.log($scope.users);
-            });
-        }
+      //function defs
+      function getDataFromLocalStorage()
+      {
+        console.log("getDataFromLocalStorage()");
+        $scope.user = JSON.parse(localStorage['User-Data']);
+        console.log($scope.user);
+      }
 
-        $scope.follow = function(userId, fitnetworkerId)
-        {
-          request = {userId: userId,
-                  fitnetworkerId: fitnetworkerId};
+      function updateLocalStorage(updatedData)
+      {
+        console.log("updateLocalStorage()");
+        localStorage.clear();
+        localStorage.setItem('User-Data', JSON.stringify(updatedData));
+      }
 
-          $http.post('api/users/follow', request)
-              .then(function (response) {
+      function getUsers()
+      {
+          console.log("getUsers()");
+          $http.get('api/users/get').then(function(response){
+            $scope.users = response.data;
+            console.log($scope.users);
+          });
+      }
+
+      $scope.follow = function(userId, fitnetworkerId)
+      {
+        request = {userId: userId,
+                fitnetworkerId: fitnetworkerId};
+
+        $http.post('api/users/follow', request)
+            .then(function (response) {
+              console.log(response.data);
+              $scope.user = response.data;
+
+              updateLocalStorage(response.data);
+              getUsers();
+            })
+      };
+
+      $scope.unfollow = function(userId, fitnetworkerId)
+      {
+        request = {userId: userId,
+                fitnetworkerId: fitnetworkerId};
+
+        $http.post('api/users/unfollow', request)
+              .then(function(response){
                 console.log(response.data);
                 $scope.user = response.data;
 
                 updateLocalStorage(response.data);
                 getUsers();
               })
-        };
+      };
 
-        $scope.unfollow = function(userId, fitnetworkerId)
-        {
-          request = {userId: userId,
-                  fitnetworkerId: fitnetworkerId};
-
-          $http.post('api/users/unfollow', request)
-                .then(function(response){
-                  console.log(response.data);
-                  $scope.user = response.data;
-
-                  updateLocalStorage(response.data);
-                  getUsers();
-                })
-        };
-
-        $scope.checkIsFollowing = function(fitnetworkerId)
-        {
-            for(var i=0; i < $scope.user.following.length; i++)
-            {
-              if($scope.user.following[i].userId === fitnetworkerId){
-                return true;
-              }
+      $scope.checkIsFollowing = function(fitnetworkerId)
+      {
+          for(var i=0; i < $scope.user.following.length; i++)
+          {
+            if($scope.user.following[i].userId === fitnetworkerId){
+              return true;
             }
-            return false;
-        };
+          }
+          return false;
+      };
 
     }])
 }())

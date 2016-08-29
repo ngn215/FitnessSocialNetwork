@@ -14,7 +14,7 @@
       //               + currentdate.getSeconds()
       //               + currentdate.getMilliseconds();
 
-      var datetime = moment().format('MMDDYYYY HmmssSSS');
+      var datetime = moment().format('MMDDYYYY Hmmss SSS');
       console.log(datetime + " : " + text);
     }
   }])

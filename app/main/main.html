@@ -14,7 +14,10 @@
       <tr ng-repeat="fitbit in fitbits">
         <td>
           {{fitbit.user}}
-          <image ng-src="{{fitbit.userImage}}" class="img-responsive"></image>
+          <div ng-repeat="fitbitInner in fitbit.UserInfo">
+            <!-- {{fitbitInner.image}} -->
+            <image ng-src="{{fitbitInner.image}}" class="img-responsive"></image>
+          </div>
         </td>
         <td>
           <strong>{{fitbit.date | date: 'MM/dd/yyyy hh:mm:ss'}}</strong> <br />

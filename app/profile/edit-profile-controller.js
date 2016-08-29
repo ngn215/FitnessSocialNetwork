@@ -1,9 +1,35 @@
 (function () {
   angular.module('FitnessNetwork')
-    .controller('EditProfileController', ['Upload', '$scope', '$state', '$http',
-      function(Upload,  $scope,   $state,   $http){
+    .controller('EditProfileController', ['Upload', '$scope', '$state', '$http', 'sessionService',
+      function(Upload,  $scope,   $state,   $http, sessionService){
 
-        $scope.user = JSON.parse(localStorage['User-Data']) || undefined;
+        $scope.controllerName = "EditProfileController";
+
+        function initializePage()
+        {
+          console.log("initializePage()");
+          $scope.user = JSON.parse(localStorage['User-Data']);
+        }
+
+        if (sessionService.isUserLoggedIn($scope.controllerName)){
+            $scope.loggedIn = true;
+            initializePage();
+        }
+        else {
+          console.log("setting $scope.loggedIn = false");
+          $scope.loggedIn = false;
+        }
+
+        $scope.$on('successfullLogIn', function(event) {
+          console.log("successfullLogIn Event handler");
+          $scope.loggedIn = true;
+          initializePage();
+        })
+
+        $scope.$on('successfullLogOut', function(event) {
+          console.log("successfullLogOut Event handler");
+          $scope.loggedIn = false;
+        })
 
         $scope.$watch(function(){
           return $scope.file

@@ -1,18 +1,23 @@
 (function (arguments) {
   angular.module('FitnessNetwork')
-    .controller('MainController', ['$scope', '$http', '$interval', '$rootScope','sessionService',
-                          function ($scope, $http, $interval, $rootScope, sessionService) {
+    .controller('MainController', ['$scope', '$http', '$interval', '$rootScope','sessionService','loggingService',
+                          function ($scope, $http, $interval, $rootScope, sessionService, loggingService) {
 
           $scope.controllerName = "MainController";
 
-          if (sessionService.isUserLoggedIn($scope.controllerName)) {
-            //console.log("inside if (sessionService.isUserLoggedIn())");
-            $scope.loggedIn = true;
+          function initializePage()
+          {
+            console.log("initializePage()");
             loadUserData();
             getFitbits(true);
           }
+
+          if (sessionService.isUserLoggedIn($scope.controllerName)) {
+            $scope.loggedIn = true;
+            initializePage();
+          }
           else {
-            //console.log("inside else part of if (sessionService.isUserLoggedIn())");
+            console.log("setting $scope.loggedIn = false");
             $scope.loggedIn = false;
           }
 
@@ -20,18 +25,27 @@
           {
             console.log("loadUserData()");
             $scope.user = JSON.parse(localStorage['User-Data']);
+            //$scope.userImage = JSON.parse(localStorage['User-Data']).image;
+            // $scope.userId = JSON.parse(localStorage['User-Data'])._id;
             console.log($scope.user);
+            //console.log($scope.image);
           }
 
           function getFitbits (intial){
             console.log("getFitbits" + "(" + intial + ")");
-            $http.get('api/fitbit/get').success(function (response) {
+
+            // var request = {
+            //   userId: $scope.user._id
+            // }
+
+            $http.get("api/fitbit/get").success(function (response) {
               if (intial) {
                 $scope.fitbits = response;
                 $rootScope.$broadcast('intialFitbitsRecd');
               } else {
                   if(response.length > $scope.fitbits.length){
                       $scope.incomingFitbits = response;
+                      //$scope.fitbits = response;
                   }
               }
             })
@@ -40,8 +54,7 @@
           $scope.$on('successfullLogIn', function(event) {
             console.log("successfullLogIn Event handler");
             $scope.loggedIn = true;
-            loadUserData();
-            getFitbits(true);
+            initializePage();
           })
 
           $scope.$on('successfullLogOut', function(event) {

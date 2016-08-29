@@ -4,12 +4,12 @@
   app.service('sessionService',['loggingService', function(loggingService){
 
     this.loadSessionData = function(sessionData){
-      console.log("sessionService:loadSessionData(sessionData)");
+      loggingService.log("sessionService:loadSessionData(sessionData)");
       localStorage.setItem('User-Data', JSON.stringify(sessionData));
     }
 
     this.clearSessionData = function(){
-      console.log("sessionService:clearSessionData()");
+      loggingService.log("sessionService:clearSessionData()");
       localStorage.clear();
     }
 
