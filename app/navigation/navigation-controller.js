@@ -33,6 +33,10 @@
         $rootScope.$broadcast('successfullLogOut');
     };
 
+    // $scope.itemClicked = function () {
+    //   $scope.class = "active";
+    // }
+
   }])
 
 }());

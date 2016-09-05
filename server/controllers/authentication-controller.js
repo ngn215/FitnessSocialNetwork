@@ -28,3 +28,22 @@ module.exports.login = function(req, res){
   })
 
 }
+
+module.exports.getUsersData = function(req, res){
+  User.find({email: req.body.email}, function(error, results){
+    if (error){
+      console.log("Error Out");
+    }
+
+    if (results && results.length === 1){
+      var userData = results[0];
+      console.log("user already exists");
+      res.json({userExists: true});
+    }
+    else {
+      console.log("user does not exist");
+      res.json({userExists: false});
+    }
+  })
+
+}

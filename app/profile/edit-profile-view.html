@@ -1,10 +1,19 @@
 <div ng-show="loggedIn">
   <div class="col-sm-6 col-sm-offset-2">
 
-    <div class="row">
+    <!-- <div class="alert alert-success" role="alert">
+      <strong>Well done!</strong>
+      You successfully uploaded a new profile picture.
+    </div> -->
 
-      <div class="button" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
-      ngf-accept="'image/*'">Select Image</div>
+    <div class="row">
+      <div>
+        <image ng-src="{{userImage}}" class="img-responsive"></image>
+      </div>
+
+    <div class="button" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
+      ngf-accept="'image/*'">Change Profile Picture
+    </div>
 
   <!--
       <button type="button" class="btn btn-success" ngf-select ng-model="file"
@@ -12,7 +21,7 @@
       ngf-accept="'image/*'">Select Image</button>
     -->
     </div>
-
+    <br />
     <div class="row">
       Username : <input class="form-control" ng-model="user.username" ng-blur="updateUsername()" />
     </div>

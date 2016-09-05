@@ -1,5 +1,5 @@
 (function(){
-  angular.module('FitnessNetwork', ['ui.router', 'ngFileUpload'])
+  angular.module('FitnessNetwork', ['ui.router', 'ngFileUpload', 'ngMessages'])
           .config(function($stateProvider, $urlRouterProvider){
 
           $urlRouterProvider.otherwise('/');

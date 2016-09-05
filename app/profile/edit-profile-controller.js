@@ -9,6 +9,7 @@
         {
           console.log("initializePage()");
           $scope.user = JSON.parse(localStorage['User-Data']);
+          $scope.userImage = JSON.parse(localStorage['User-Data']).image;
         }
 
         if (sessionService.isUserLoggedIn($scope.controllerName)){
