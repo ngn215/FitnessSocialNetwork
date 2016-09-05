@@ -41,6 +41,12 @@
           <a ng-click="logUserIn()" ui-sref="main">Login</a>&nbsp;
           <a ui-sref="signUp">Create an account</a>
         </div>
+
+        <div class="alert alert-danger"
+              ng-show="loginFailed">
+            <strong>Login failed. Invalid email or password.</strong>
+        </div>
+
         <div ng-show="loggedIn">
           <ul class="nav nav-pills">
             <li>

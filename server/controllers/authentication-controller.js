@@ -16,14 +16,22 @@ module.exports.login = function(req, res){
       console.log("Error Out");
     }
 
-    if (results && results.length === 1){
+    if (results && results.length === 1)
+    {
+      console.log("user found");
       var userData = results[0];
       res.json({email: req.body.email,
                 _id: userData._id,
                 username: userData.username,
                 image: userData.image,
                 following: userData.following,
-                followers: userData.followers});
+                followers: userData.followers,
+                loginstatus: "success"});
+    }
+    else
+    {
+      console.log("user not found");
+      res.json({loginstatus: "failed"});
     }
   })
 

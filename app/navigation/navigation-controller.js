@@ -5,6 +5,7 @@
     function($scope, $http, $state, $rootScope, sessionService){
 
       $scope.controllerName = "NavigationController";
+      $scope.loginFailed = false;
 
       if (sessionService.isUserLoggedIn($scope.controllerName)) {
         $scope.loggedIn = true;
@@ -16,10 +17,21 @@
     $scope.logUserIn = function(){
       $http.post('api/user/login', $scope.login).success(function(response){
         //localStorage.setItem('User-Data', JSON.stringify(response));
-        sessionService.loadSessionData(response);
-        $scope.loggedIn = true;
+        console.log(response.loginstatus);
+        if(response.loginstatus === "success")
+        {
+            console.log("login successfull");
+            sessionService.loadSessionData(response);
+            $scope.loggedIn = true;
+            $scope.loginFailed = false;
 
-        $rootScope.$broadcast('successfullLogIn');
+            $rootScope.$broadcast('successfullLogIn');
+        }
+        else
+        {
+            console.log("login failed");
+            $scope.loginFailed = true;
+        }
       }).error(function(error){
         console.error(error);
         console.log("error");
